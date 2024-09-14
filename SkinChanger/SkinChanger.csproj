@@ -26,16 +26,7 @@
     <Content Include="SkinChanger.csproj.user" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="planets\**\*.*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="translations\**\*.*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="addon-manifest.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="subtitle.png" Condition="Exists('subtitle.png')">
+    <None Include="Assets\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

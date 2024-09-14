@@ -33,15 +33,15 @@
       "tooltip": "Changes the model of the player.",
       "value": "Hatchling"
     },
-    "Change Collider": {
-      "type": "toggle",
-      "tooltip": "Changes colliders to match player model.",
-      "value": false
-    },
     "Change Camera": {
       "type": "toggle",
       "tooltip": "Changes camera height to match player model.",
       "value": true
+    },
+    "Change Collider": {
+      "type": "toggle",
+      "tooltip": "Changes colliders to match player model.",
+      "value": false
     }
   }
 }
