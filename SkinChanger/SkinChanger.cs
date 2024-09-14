@@ -4,7 +4,7 @@ using OWML.ModHelper;
 using OWML.ModHelper.Events;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Assertions;
 
 namespace SkinChanger
 {
@@ -22,8 +22,14 @@ namespace SkinChanger
 
         public static SkinChanger instance;
 
-    class PlayableCharacter
+        public static AssetBundle skin;
+
+        public Dictionary<string, GameObject> skinObjects;
+
+        class PlayableCharacter
         {
+            public string name;
+
             public GameObject gameObject;
             public string SettingName;
             public Vector3 CameraOffset;
@@ -32,9 +38,13 @@ namespace SkinChanger
             public float ColliderHeight;
             public Vector3 ColliderCenter;
 
+
+
             public PlayableCharacter(string name, string settingName, Vector3 camOffset, float collRadius, float collHeight, Vector3 collCenter)
             {
-                gameObject = GameObject.Find(name);
+                this.name = name;
+                gameObject = GameObject.Instantiate(skin.LoadAsset<GameObject>(name+".prefab"));
+
                 if (gameObject == null)
                 {
                     instance.ModHelper.Console.WriteLine(name + " JKLLLLLLLLLLLLLLLLLLLLLLL,DSDK/.CGBJKHG,BUHASO,L.BFGN,LUSNV,CCCCCCBVGLRFEWIHSD");
@@ -47,9 +57,16 @@ namespace SkinChanger
             }
         }
 
+        public interface IQSBAPI
+        {
+
+        }
+
         private void Start()
         {
             instance = this;
+
+            skin = ModHelper.Assets.LoadBundle("planets/Assets/skin");
 
             // Starting here, you'll have access to OWML's mod helper.
             ModHelper.Console.WriteLine("Other Playable Characters is loaded!", MessageType.Success);
@@ -89,36 +106,43 @@ namespace SkinChanger
                 PlayerCollider = GameObject.Find("Player_Body").GetComponent<CapsuleCollider>();
 
                 characters = new List<PlayableCharacter>()
-                {                          //Unity Object name      //Setting Name  //Camera Offset                     //Collider Radius, Height, Center
-                    new PlayableCharacter("Traveller_HEA_Player_v0", Hatchling,     new Vector3(0, 0.8496093f, 0.15f),  0.5f, 2f,   Vector3.zero),
-                    new PlayableCharacter("Traveller_HEA_Player_v1", Hatchling,     new Vector3(0, 0.8496093f, 0.15f),  0.5f, 2f,   Vector3.zero),
-                    new PlayableCharacter("Traveller_HEA_Player_v3", "Inhabitant",  new Vector3(0, 2.2f, 0.27f),        0.5f, 3.6f, new Vector3(0f, 0.875f, 0f)),
-                    new PlayableCharacter("Traveller_HEA_Player_v4", "Nomai",       new Vector3(0, 1.1f, 0.3f),         0.5f, 2.5f, new Vector3(0f, 0.3f, 0f)),
-                    new PlayableCharacter("Traveller_HEA_Player_v5", "Chert",       new Vector3(0, 0.3f, 0.2f),         0.5f, 1.5f, new Vector3(0f, -0.2f, 0f)),
-                    new PlayableCharacter("Traveller_HEA_Player_v6", "Esker",       new Vector3(0, 0.9f, 0.2f),         0.5f, 2f,   Vector3.zero),
-                    new PlayableCharacter("Traveller_HEA_Player_v7", "Riebeck",     new Vector3(0, 1.1f, 0.3f),         0.5f, 2.5f, new Vector3(0f, 0.2f, 0f)),
-                    new PlayableCharacter("Traveller_HEA_Player_v8", "Gabbro",      new Vector3(0, 1.1f, 0.2f),         0.5f, 2.5f, new Vector3(0f, 0.2f, 0)),
-                    new PlayableCharacter("Traveller_HEA_Player_v9", "Feldspar",    new Vector3(0f, 0.4f, 0.2f),        0.5f, 2f,   Vector3.zero),
-                    new PlayableCharacter("Traveller_HEA_Player_v10","Slate",       new Vector3(0, 1.2f, 0.2f),         0.5f, 2.5f, new Vector3(0f, 0.2f, 0)),
-                    new PlayableCharacter("Traveller_HEA_Player_v11","Hal",         new Vector3(0, 0.8496093f, 0.15f),  0.5f, 2f,   Vector3.zero),
-                    new PlayableCharacter("Traveller_HEA_Player_v12","Hornfels",    new Vector3(0, 1.2f, 0.2f),         0.5f, 2.5f, new Vector3(0f, 0.2f, 0)),
-                    new PlayableCharacter("Traveller_HEA_Player_v13","Gossan",      new Vector3(0f, 0.4f, 0.2f),        0.5f, 2f,   Vector3.zero),
-                    new PlayableCharacter("Traveller_HEA_Player_v14","Mica",        new Vector3(0, 0.3f, 0.1f),        0.5f, 1.5f, new Vector3(0f, -0.2f, 0)),
-                    new PlayableCharacter("Traveller_HEA_Player_v15","Arkose",      new Vector3(0, 0.3f, 0.1f),        0.5f, 1.5f, new Vector3(0f, -0.2f, 0)),
-                    new PlayableCharacter("Traveller_HEA_Player_v16","Tephra",      new Vector3(0, 0.3f, 0.1f),        0.5f, 1.5f, new Vector3(0f, -0.2f, 0)),
-                    new PlayableCharacter("Traveller_HEA_Player_v17","Galena",      new Vector3(0, 0.3f, 0.1f),        0.5f, 1.5f, new Vector3(0f, -0.2f, 0)),
-                    new PlayableCharacter("Traveller_HEA_Player_v18","Spinel",      new Vector3(0, 0.7f, 0.2f),         0.5f, 2f,   Vector3.zero),
-                    new PlayableCharacter("Traveller_HEA_Player_v19","Porphy",      new Vector3(0, 1.3f, 0.2f),         0.5f, 2.5f, new Vector3(0f, 0.25f, 0)),
-                    new PlayableCharacter("Traveller_HEA_Player_v20","Rutile",      new Vector3(0, 0.8496093f, 0.15f),  0.5f, 2f,   Vector3.zero),
-                    new PlayableCharacter("Traveller_HEA_Player_v21","Marl",        new Vector3(0, 1.3f, 0.2f),         0.5f, 2.5f, new Vector3(0f, 0.25f, 0)),
-                    new PlayableCharacter("Traveller_HEA_Player_v22","Gneiss",      new Vector3(0f, 0.4f, 0.2f),        0.5f, 2f,   Vector3.zero),
-                    new PlayableCharacter("Traveller_HEA_Player_v23","Moraine",     new Vector3(0, 0.3f, 0.1f),        0.5f, 1.5f, new Vector3(0f, -0.2f, 0)),
-                    new PlayableCharacter("Traveller_HEA_Player_v24","Tuff",        new Vector3(0, 0.8496093f, 0.15f),  0.5f, 2f,   Vector3.zero),
-                    new PlayableCharacter("Traveller_HEA_Player_v25","Tektite",     new Vector3(0, 1.2f, 0.2f),         0.5f, 2.5f, new Vector3(0f, 0.25f, 0))
+                {   //Unity Object name                                         //Setting Name      //Camera Offset                     //Collider Radius, Height, Center
+                    new PlayableCharacter("Traveller_HEA_Player_v0",     Hatchling,          new Vector3(0, 0.8496093f, 0.15f),  0.5f, 2f,   Vector3.zero),
+                    new PlayableCharacter("Traveller_HEA_Player_v1",     Hatchling,          new Vector3(0, 0.8496093f, 0.15f),  0.5f, 2f,   Vector3.zero),
+                    new PlayableCharacter("Traveller_HEA_Player_v3",     "Inhabitant",       new Vector3(0, 2.2f, 0.27f),        0.5f, 3.6f, new Vector3(0f, 0.875f, 0f)),
+                    new PlayableCharacter("Traveller_HEA_Player_v4",     "Nomai",            new Vector3(0, 1.1f, 0.3f),         0.5f, 2.5f, new Vector3(0f, 0.3f, 0f)),
+                    new PlayableCharacter("Traveller_HEA_Player_v5",     "Chert",            new Vector3(0, 0.3f, 0.2f),         0.5f, 1.5f, new Vector3(0f, -0.2f, 0f)),
+                    new PlayableCharacter("Traveller_HEA_Player_v6",     "Esker",            new Vector3(0, 0.9f, 0.2f),         0.5f, 2f,   Vector3.zero),
+                    new PlayableCharacter("Traveller_HEA_Player_v7",     "Riebeck",          new Vector3(0, 1.1f, 0.3f),         0.5f, 2.5f, new Vector3(0f, 0.2f, 0f)),
+                    new PlayableCharacter("Traveller_HEA_Player_v8",     "Gabbro",           new Vector3(0, 1.1f, 0.2f),         0.5f, 2.5f, new Vector3(0f, 0.2f, 0)),
+                    new PlayableCharacter("Traveller_HEA_Player_v9",     "Feldspar",         new Vector3(0f, 0.4f, 0.2f),        0.5f, 2f,   Vector3.zero),
+                    new PlayableCharacter("Traveller_HEA_Player_v10",    "Slate",            new Vector3(0, 1.2f, 0.2f),         0.5f, 2.5f, new Vector3(0f, 0.2f, 0)),
+                    new PlayableCharacter("Traveller_HEA_Player_v11",    "Hal",              new Vector3(0, 0.8496093f, 0.15f),  0.5f, 2f,   Vector3.zero),
+                    new PlayableCharacter("Traveller_HEA_Player_v12",    "Hornfels",         new Vector3(0, 1.2f, 0.2f),         0.5f, 2.5f, new Vector3(0f, 0.2f, 0)),
+                    new PlayableCharacter("Traveller_HEA_Player_v13",    "Gossan",           new Vector3(0f, 0.5f, 0.1f),        0.5f, 2f,   Vector3.zero),
+                    new PlayableCharacter("Traveller_HEA_Player_v14",    "Mica",             new Vector3(0, 0.3f, 0.1f),         0.5f, 1.5f, new Vector3(0f, -0.2f, 0)),
+                    new PlayableCharacter("Traveller_HEA_Player_v15",    "Arkose",           new Vector3(0, 0.3f, 0.1f),         0.5f, 1.5f, new Vector3(0f, -0.2f, 0)),
+                    new PlayableCharacter("Traveller_HEA_Player_v16",    "Tephra",           new Vector3(0, 0.3f, 0.1f),         0.5f, 1.5f, new Vector3(0f, -0.2f, 0)),
+                    new PlayableCharacter("Traveller_HEA_Player_v17",    "Galena",           new Vector3(0, 0.3f, 0.1f),         0.5f, 1.5f, new Vector3(0f, -0.2f, 0)),
+                    new PlayableCharacter("Traveller_HEA_Player_v18",    "Spinel",           new Vector3(0, 0.7f, 0.2f),         0.5f, 2f,   Vector3.zero),
+                    new PlayableCharacter("Traveller_HEA_Player_v19",    "Porphy",           new Vector3(0, 1.3f, 0.2f),         0.5f, 2.5f, new Vector3(0f, 0.25f, 0)),
+                    new PlayableCharacter("Traveller_HEA_Player_v20",    "Rutile",           new Vector3(0, 0.8496093f, 0.15f),  0.5f, 2f,   Vector3.zero),
+                    new PlayableCharacter("Traveller_HEA_Player_v21",    "Marl",             new Vector3(0, 1.3f, 0.25f),        0.5f, 2.5f, new Vector3(0f, 0.25f, 0)),
+                    new PlayableCharacter("Traveller_HEA_Player_v22",    "Gneiss",           new Vector3(0f, 0.4f, 0.2f),        0.5f, 2f,   Vector3.zero),
+                    new PlayableCharacter("Traveller_HEA_Player_v23",    "Moraine",          new Vector3(0, 0.3f, 0.1f),         0.5f, 1.5f, new Vector3(0f, -0.2f, 0)),
+                    new PlayableCharacter("Traveller_HEA_Player_v24",    "Tuff",             new Vector3(0, 0.8496093f, 0.15f),  0.5f, 2f,   Vector3.zero),
+                    new PlayableCharacter("Traveller_HEA_Player_v25",    "Tektite",          new Vector3(0, 1.2f, 0.2f),         0.5f, 2.5f, new Vector3(0f, 0.25f, 0))
 
                 };
 
                 ChangeSkin();
+
+                skinObjects = new();
+
+                foreach (PlayableCharacter character in characters)
+                {
+                    skinObjects.Add(character.SettingName, GameObject.Instantiate(skin.LoadAsset<GameObject>("Assets/" + character.name + ".prefab"), PlayerCollider.transform));
+                }
             });
         }
         public override void Configure(IModConfig config)
@@ -129,10 +153,12 @@ namespace SkinChanger
 
         const string ModelSetting = "Model";
         const string ChangeCollider = "Change Collider";
+        const string ChangeCamera = "Change Camera";
         void ChangeSkin()
         {
             var modelSetting = ModHelper.Config.GetSettingsValue<string>(ModelSetting);
             var useCollider = ModHelper.Config.GetSettingsValue<bool>(ChangeCollider);
+            var useCamera = ModHelper.Config.GetSettingsValue<bool>(ChangeCamera);
 
             if (!useCollider)
             {
@@ -141,12 +167,20 @@ namespace SkinChanger
                 PlayerCollider.center = characters[0].ColliderCenter;
             }
 
+            else if (!useCamera)
+            {
+                CamOffset._origLocalPosition = characters[0].CameraOffset;
+            }
+
             foreach (var character in characters)
             {
                 if (modelSetting == character.SettingName)
                 {
                     character.gameObject.SetActive(true);
-                    CamOffset._origLocalPosition = character.CameraOffset;
+                    if (useCamera) 
+                    {
+                        CamOffset._origLocalPosition = character.CameraOffset;
+                    }
 
                     if (useCollider) {
                         PlayerCollider.radius = character.ColliderRadius;
