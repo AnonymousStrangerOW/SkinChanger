@@ -11,7 +11,10 @@ namespace SkinChanger
 		public static SkinChanger instance;
 
 		public PlayerCameraController PlayerCamera;
-		public CapsuleCollider PlayerCollider;
+		// cant use array cuz one of them is a shape :((((
+		public CapsuleCollider PlayerCollider1;
+		public CapsuleCollider PlayerCollider2;
+		public CapsuleShape PlayerCollider3;
 		public GameObject Traveller_HEA_Player_v2;
 
 		Dictionary<string, GameObject> prefabs = new();
@@ -99,7 +102,9 @@ namespace SkinChanger
 				var player = GameObject.Find("Player_Body");
 				PlayerCamera = player.transform.Find("PlayerCamera").GetComponent<PlayerCameraController>();
 
-				PlayerCollider = player.GetComponent<CapsuleCollider>();
+				PlayerCollider1 = player.GetComponent<CapsuleCollider>();
+				PlayerCollider2 = player.transform.Find("PlayerDetector").GetComponent<CapsuleCollider>();
+				PlayerCollider3 = player.transform.Find("PlayerDetector").GetComponent<CapsuleShape>();
 
 				Traveller_HEA_Player_v2 = player.transform.Find("Traveller_HEA_Player_v2").gameObject;
 
@@ -169,9 +174,15 @@ namespace SkinChanger
 
 			if (!useCollider)
 			{
-				PlayerCollider.radius = characters[0].ColliderRadius;
-				PlayerCollider.height = characters[0].ColliderHeight;
-				PlayerCollider.center = characters[0].ColliderCenter;
+				PlayerCollider1.radius = characters[0].ColliderRadius;
+				PlayerCollider2.radius = characters[0].ColliderRadius;
+				PlayerCollider3.radius = characters[0].ColliderRadius;
+				PlayerCollider1.height = characters[0].ColliderHeight;
+				PlayerCollider2.height = characters[0].ColliderHeight;
+				PlayerCollider3.height = characters[0].ColliderHeight;
+				PlayerCollider1.center = characters[0].ColliderCenter;
+				PlayerCollider2.center = characters[0].ColliderCenter;
+				PlayerCollider3.center = characters[0].ColliderCenter;
 			}
 
 			foreach (var character in characters)
@@ -187,9 +198,15 @@ namespace SkinChanger
 
 					if (useCollider)
 					{
-						PlayerCollider.radius = character.ColliderRadius;
-						PlayerCollider.height = character.ColliderHeight;
-						PlayerCollider.center = character.ColliderCenter;
+						PlayerCollider1.radius = character.ColliderRadius;
+						PlayerCollider2.radius = character.ColliderRadius;
+						PlayerCollider3.radius = character.ColliderRadius;
+						PlayerCollider1.height = character.ColliderHeight;
+						PlayerCollider2.height = character.ColliderHeight;
+						PlayerCollider3.height = character.ColliderHeight;
+						PlayerCollider1.center = character.ColliderCenter;
+						PlayerCollider2.center = character.ColliderCenter;
+						PlayerCollider3.center = character.ColliderCenter;
 					}
 				}
 				else
