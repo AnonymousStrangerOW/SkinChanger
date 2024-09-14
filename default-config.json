@@ -1,0 +1,42 @@
+{
+  "$schema": "https://raw.githubusercontent.com/ow-mods/owml/master/schemas/config_schema.json",
+  "enabled": true,
+  "settings": {
+    "Model": {
+      "type": "selector",
+      "options": [
+        "Hatchling",
+        "Chert",
+        "Esker",
+        "Riebeck",
+        "Gabbro",
+        "Feldspar",
+        "Nomai",
+        "Inhabitant",
+        "Slate",
+        "Hal",
+        "Hornfels",
+        "Gossan",
+        "Mica",
+        "Arkose",
+        "Tephra",
+        "Galena",
+        "Spinel",
+        "Porphy",
+        "Rutile",
+        "Marl",
+        "Gneiss",
+        "Moraine",
+        "Tuff",
+        "Tektite"
+      ],
+      "tooltip": "Changes the model of the player.",
+      "value": "Hatchling"
+    },
+    "Change Collider": {
+      "type": "toggle",
+      "tooltip": "Changes colliders to match player model.",
+      "value": false
+    }
+  }
+}
