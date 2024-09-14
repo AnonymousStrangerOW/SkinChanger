@@ -76,7 +76,25 @@ namespace SkinChanger
 		{
 			instance = this;
 
-			foreach (var path in Directory.EnumerateFiles(Path.Combine(ModHelper.Manifest.ModFolderPath, "Assets")))
+            var QSB = ModHelper.Interaction.TryGetModApi<IQSBAPI>("Raicuparta.QuantumSpaceBuddies");
+
+			QSB.OnPlayerJoin().AddListener((QSBPlayer) =>
+            {
+				var QSBBody = QSB.GetPlayerBody(QSBPlayer);
+
+
+
+                // parent them to the player
+                foreach (var character in characters)
+                {
+                    character.GameObject.transform.SetParent(QSBBody.transform, false);
+                    // this terrible position comes from vanilla player. cry about it
+                    character.GameObject.transform.localPosition = new Vector3(0, -1.03f, -0.2f);
+                    character.GameObject.transform.localScale = Vector3.one * .1f;
+                }
+            });
+
+            foreach (var path in Directory.EnumerateFiles(Path.Combine(ModHelper.Manifest.ModFolderPath, "Assets")))
 			{
 				if (Path.GetExtension(path) == ".manifest") continue; // ignore the non bundle files
 
@@ -111,31 +129,31 @@ namespace SkinChanger
 				// make the instances of the prefabs
 				characters = new List<PlayableCharacter>()
 				{
-					//Unity Object name                                         //Setting Name      //Camera Offset                     //Collider Radius, Height, Center
-					new PlayableCharacter(null /*uses existing v2*/, "Hatchling", new Vector3(0, 0.8496093f, 0.15f), 0.5f, 2f, Vector3.zero),
-					new PlayableCharacter("Traveller_HEA_Player_v3", "Inhabitant", new Vector3(0, 2.2f, 0.27f), 0.5f, 3.6f, new Vector3(0f, 0.875f, 0f)),
-					new PlayableCharacter("Traveller_HEA_Player_v4", "Nomai", new Vector3(0, 1.1f, 0.3f), 0.5f, 2.5f, new Vector3(0f, 0.3f, 0f)),
-					new PlayableCharacter("Traveller_HEA_Player_v5", "Chert", new Vector3(0, 0.3f, 0.2f), 0.5f, 1.5f, new Vector3(0f, -0.2f, 0f)),
-					new PlayableCharacter("Traveller_HEA_Player_v6", "Esker", new Vector3(0, 0.9f, 0.2f), 0.5f, 2f, Vector3.zero),
-					new PlayableCharacter("Traveller_HEA_Player_v7", "Riebeck", new Vector3(0, 1.1f, 0.3f), 0.5f, 2.5f, new Vector3(0f, 0.2f, 0f)),
-					new PlayableCharacter("Traveller_HEA_Player_v8", "Gabbro", new Vector3(0, 1.1f, 0.2f), 0.5f, 2.5f, new Vector3(0f, 0.2f, 0)),
-					new PlayableCharacter("Traveller_HEA_Player_v9", "Feldspar", new Vector3(0f, 0.4f, 0.2f), 0.5f, 2f, Vector3.zero),
-					new PlayableCharacter("Traveller_HEA_Player_v10", "Slate", new Vector3(0, 1.2f, 0.2f), 0.5f, 2.5f, new Vector3(0f, 0.2f, 0)),
-					new PlayableCharacter("Traveller_HEA_Player_v11", "Hal", new Vector3(0, 0.8496093f, 0.15f), 0.5f, 2f, Vector3.zero),
-					new PlayableCharacter("Traveller_HEA_Player_v12", "Hornfels", new Vector3(0, 1.2f, 0.2f), 0.5f, 2.5f, new Vector3(0f, 0.2f, 0)),
-					new PlayableCharacter("Traveller_HEA_Player_v13", "Gossan", new Vector3(0f, 0.5f, 0.1f), 0.5f, 2f, Vector3.zero),
-					new PlayableCharacter("Traveller_HEA_Player_v14", "Mica", new Vector3(0, 0.3f, 0.1f), 0.5f, 1.5f, new Vector3(0f, -0.2f, 0)),
-					new PlayableCharacter("Traveller_HEA_Player_v15", "Arkose", new Vector3(0, 0.3f, 0.1f), 0.5f, 1.5f, new Vector3(0f, -0.2f, 0)),
-					new PlayableCharacter("Traveller_HEA_Player_v16", "Tephra", new Vector3(0, 0.3f, 0.1f), 0.5f, 1.5f, new Vector3(0f, -0.2f, 0)),
-					new PlayableCharacter("Traveller_HEA_Player_v17", "Galena", new Vector3(0, 0.3f, 0.1f), 0.5f, 1.5f, new Vector3(0f, -0.2f, 0)),
-					new PlayableCharacter("Traveller_HEA_Player_v18", "Spinel", new Vector3(0, 0.7f, 0.2f), 0.5f, 2f, Vector3.zero),
-					new PlayableCharacter("Traveller_HEA_Player_v19", "Porphy", new Vector3(0, 1.3f, 0.2f), 0.5f, 2.5f, new Vector3(0f, 0.25f, 0)),
-					new PlayableCharacter("Traveller_HEA_Player_v20", "Rutile", new Vector3(0, 0.8496093f, 0.15f), 0.5f, 2f, Vector3.zero),
-					new PlayableCharacter("Traveller_HEA_Player_v21", "Marl", new Vector3(0, 1.3f, 0.25f), 0.5f, 2.5f, new Vector3(0f, 0.25f, 0)),
-					new PlayableCharacter("Traveller_HEA_Player_v22", "Gneiss", new Vector3(0f, 0.4f, 0.2f), 0.5f, 2f, Vector3.zero),
-					new PlayableCharacter("Traveller_HEA_Player_v23", "Moraine", new Vector3(0, 0.3f, 0.1f), 0.5f, 1.5f, new Vector3(0f, -0.2f, 0)),
-					new PlayableCharacter("Traveller_HEA_Player_v24", "Tuff", new Vector3(0, 0.8496093f, 0.15f), 0.5f, 2f, Vector3.zero),
-					new PlayableCharacter("Traveller_HEA_Player_v25", "Tektite", new Vector3(0, 1.2f, 0.2f), 0.5f, 2.5f, new Vector3(0f, 0.25f, 0))
+					//Unity Object name                                //Setting Name      //Camera Offset                     //Collider Radius, Height, Center
+					new PlayableCharacter(null /*uses existing v2*/,   "Hatchling",        new Vector3(0, 0.8496093f, 0.15f),  0.5f, 2f,         Vector3.zero),
+					new PlayableCharacter("Traveller_HEA_Player_v3",   "Inhabitant",       new Vector3(0, 2.2f, 0.27f),        0.5f, 3.6f,       new Vector3(0f, 0.875f, 0f)),
+					new PlayableCharacter("Traveller_HEA_Player_v4",   "Nomai",            new Vector3(0, 1.1f, 0.3f),         0.5f, 2.5f,       new Vector3(0f, 0.3f, 0f)),
+					new PlayableCharacter("Traveller_HEA_Player_v5",   "Chert",            new Vector3(0, 0.3f, 0.2f),         0.5f, 1.5f,       new Vector3(0f, -0.2f, 0f)),
+					new PlayableCharacter("Traveller_HEA_Player_v6",   "Esker",            new Vector3(0, 0.9f, 0.2f),         0.5f, 2f,         Vector3.zero),
+					new PlayableCharacter("Traveller_HEA_Player_v7",   "Riebeck",          new Vector3(0, 1.1f, 0.3f),         0.5f, 2.5f,       new Vector3(0f, 0.25f, 0)),
+					new PlayableCharacter("Traveller_HEA_Player_v8",   "Gabbro",           new Vector3(0, 1.1f, 0.2f),         0.5f, 2.5f,       new Vector3(0f, 0.25f, 0)),
+					new PlayableCharacter("Traveller_HEA_Player_v9",   "Feldspar",         new Vector3(0f, 0.8f, 0.2f),        0.5f, 2f,         Vector3.zero),
+					new PlayableCharacter("Traveller_HEA_Player_v10",  "Slate",            new Vector3(0, 1.2f, 0.2f),         0.5f, 2.5f,       new Vector3(0f, 0.25f, 0)),
+					new PlayableCharacter("Traveller_HEA_Player_v11",  "Hal",              new Vector3(0, 0.8496093f,          0.15f), 0.5f, 2f, Vector3.zero),
+					new PlayableCharacter("Traveller_HEA_Player_v12",  "Hornfels",         new Vector3(0, 1.1f, 0.2f),         0.5f, 2.5f,       new Vector3(0f, 0.25f, 0)),
+					new PlayableCharacter("Traveller_HEA_Player_v13",  "Gossan",           new Vector3(0f, 0.5f, 0.1f),        0.5f, 2f,         Vector3.zero),
+					new PlayableCharacter("Traveller_HEA_Player_v14",  "Mica",             new Vector3(0, 0.3f, 0.1f),         0.5f, 1.5f,       new Vector3(0f, -0.2f, 0)),
+					new PlayableCharacter("Traveller_HEA_Player_v15",  "Arkose",           new Vector3(0, 0.3f, 0.1f),         0.5f, 1.5f,       new Vector3(0f, -0.2f, 0)),
+					new PlayableCharacter("Traveller_HEA_Player_v16",  "Tephra",           new Vector3(0, 0.3f, 0.1f),         0.5f, 1.5f,       new Vector3(0f, -0.2f, 0)),
+					new PlayableCharacter("Traveller_HEA_Player_v17",  "Galena",           new Vector3(0, 0.3f, 0.1f),         0.5f, 1.5f,       new Vector3(0f, -0.2f, 0)),
+					new PlayableCharacter("Traveller_HEA_Player_v18",  "Spinel",           new Vector3(0, 0.7f, 0.2f),         0.5f, 2f,         Vector3.zero),
+					new PlayableCharacter("Traveller_HEA_Player_v19",  "Porphy",           new Vector3(0, 1.3f, 0.2f),         0.5f, 2.5f,       new Vector3(0f, 0.25f, 0)),
+					new PlayableCharacter("Traveller_HEA_Player_v20",  "Rutile",           new Vector3(0, 0.8496093f, 0.15f),  0.5f, 2f,         Vector3.zero),
+					new PlayableCharacter("Traveller_HEA_Player_v21",  "Marl",             new Vector3(0, 1.3f, 0.25f),        0.5f, 2.5f,       new Vector3(0f, 0.25f, 0)),
+					new PlayableCharacter("Traveller_HEA_Player_v22",  "Gneiss",           new Vector3(0f, 0.8f, 0.2f),        0.5f, 2f,         Vector3.zero),
+					new PlayableCharacter("Traveller_HEA_Player_v23",  "Moraine",          new Vector3(0, 0.3f, 0.1f),         0.5f, 1.5f,       new Vector3(0f, -0.2f, 0)),
+					new PlayableCharacter("Traveller_HEA_Player_v24",  "Tuff",             new Vector3(0, 0.8496093f,          0.15f), 0.5f, 2f, Vector3.zero),
+					new PlayableCharacter("Traveller_HEA_Player_v25",  "Tektite",          new Vector3(0, 1.2f, 0.2f),         0.5f, 2.5f,       new Vector3(0f, 0.25f, 0))
 				};
 
 				// parent them to the player
