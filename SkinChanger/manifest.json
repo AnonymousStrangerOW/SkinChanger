@@ -5,6 +5,6 @@
   "name": "SkinChanger",
   "uniqueName": "pikpik_carrot.SkinChanger",
   "version": "1.0.0",
-  "owmlVersion": "2.9.6",
+  "owmlVersion": "2.13.0",
   "dependencies": ["xen.NewHorizons"]
 }

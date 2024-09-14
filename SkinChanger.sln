@@ -1,25 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.8.34511.84
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkinChanger", "SkinChanger.csproj", "{81DEAA54-77A4-4DD4-897E-E8F5EB80B3A0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkinChanger", "SkinChanger\SkinChanger.csproj", "{379B7FDC-D5C6-4BAA-A931-2CF51D77B0BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{81DEAA54-77A4-4DD4-897E-E8F5EB80B3A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{81DEAA54-77A4-4DD4-897E-E8F5EB80B3A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{81DEAA54-77A4-4DD4-897E-E8F5EB80B3A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{81DEAA54-77A4-4DD4-897E-E8F5EB80B3A0}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {CD989409-0877-4BA2-8FB9-411266297C08}
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{379B7FDC-D5C6-4BAA-A931-2CF51D77B0BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{379B7FDC-D5C6-4BAA-A931-2CF51D77B0BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{379B7FDC-D5C6-4BAA-A931-2CF51D77B0BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{379B7FDC-D5C6-4BAA-A931-2CF51D77B0BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
