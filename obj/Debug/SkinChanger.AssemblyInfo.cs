@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute("Copyright © 2024 pikpik_carrot")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+01db30469b9819bdb1130c957a7448d6b796c3ac")]
 [assembly: System.Reflection.AssemblyProductAttribute("SkinChanger")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SkinChanger")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

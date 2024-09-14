@@ -64,3 +64,4 @@ C:\Users\josh1\AppData\Roaming\OuterWildsModManager\OWML\Mods\pikpik_carrot.Skin
 C:\Users\josh1\AppData\Roaming\OuterWildsModManager\OWML\Mods\pikpik_carrot.SkinChanger\planets\Assets\traveller_hea_player_v24.manifest
 C:\Users\josh1\AppData\Roaming\OuterWildsModManager\OWML\Mods\pikpik_carrot.SkinChanger\planets\Assets\traveller_hea_player_v25
 C:\Users\josh1\AppData\Roaming\OuterWildsModManager\OWML\Mods\pikpik_carrot.SkinChanger\planets\Assets\traveller_hea_player_v25.manifest
+C:\Users\josh1\source\repos\SkinChanger\obj\Debug\SkinChanger.sourcelink.json
