@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/ow-mods/owml/master/schemas/manifest_schema.json",
   "filename": "SkinChanger.dll",
   "author": "pikpik_carrot",
-  "name": "SkinChanger",
+  "name": "Skin Changer",
   "uniqueName": "pikpik_carrot.SkinChanger",
   "version": "1.0.0",
   "owmlVersion": "2.13.0",
