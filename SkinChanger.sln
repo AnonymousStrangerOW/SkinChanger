@@ -5,7 +5,9 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkinChanger", "SkinChanger\SkinChanger.csproj", "{379B7FDC-D5C6-4BAA-A931-2CF51D77B0BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkinChangerQSB", "SkinChangerQSB\SkinChangerQSB.csproj", "{66C158C6-6A5A-4B4B-98E9-3F93626EB02E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkinChangerQSB", "SkinChangerQSB\SkinChangerQSB.csproj", "{66C158C6-6A5A-4B4B-98E9-3F93626EB02E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkinChangerAPIExample", "SkinChangerAPIExample\SkinChangerAPIExample.csproj", "{15D546EA-9491-40FD-A1A1-F09C6EB778FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{66C158C6-6A5A-4B4B-98E9-3F93626EB02E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66C158C6-6A5A-4B4B-98E9-3F93626EB02E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66C158C6-6A5A-4B4B-98E9-3F93626EB02E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15D546EA-9491-40FD-A1A1-F09C6EB778FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15D546EA-9491-40FD-A1A1-F09C6EB778FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15D546EA-9491-40FD-A1A1-F09C6EB778FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15D546EA-9491-40FD-A1A1-F09C6EB778FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

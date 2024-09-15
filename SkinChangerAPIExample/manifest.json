@@ -1,0 +1,10 @@
+{
+  "$schema": "https://raw.githubusercontent.com/ow-mods/owml/master/schemas/manifest_schema.json",
+  "filename": "SkinChangerAPIExample.dll",
+  "author": "xen",
+  "name": "Skin Changer Example",
+  "uniqueName": "xen.SkinChangerAPIExample",
+  "version": "1.0.0",
+  "owmlVersion": "2.13.0",
+  "dependencies": [ "pikpik_carrot.SkinChanger" ]
+}
