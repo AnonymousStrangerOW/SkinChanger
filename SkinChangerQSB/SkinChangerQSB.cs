@@ -122,14 +122,15 @@ public class SkinChangerQSB : MonoBehaviour
                 // Make sure the helmet animator state is set properly
                 var helmet = player.Body.GetComponentInChildren<HelmetAnimator>();
                 helmet.enabled = true;
-                // Can't find a QSB property that says if a helmet should be worn or not so just assume worn
-                helmet.SetHelmetInstant(true);
+                // Can't find a QSB property that says if a helmet should be worn or not so just assume worn if in suit
+                helmet.SetHelmetInstant(player.SuitedUp);
             }
             else
             {
                 DebugLogger.Write("Creating new skin object");
 
-                var prefab = SkinChanger.SkinChanger.instance.characters.First(x => x.SettingName == skinName).GameObject;
+                var skinChangerInstance = SkinChanger.SkinChanger.instance;
+                var prefab = (skinChangerInstance.characters.FirstOrDefault(x => x.SettingName == skinName) ?? skinChangerInstance.MissingSkin).GameObject;
                 var newPlayerModel = prefab.InstantiateInactive();
 
                 // Fix layers (Nomai and Inhabitant heads are only visible to probe)

@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
+using OWML.Utils;
+using Newtonsoft.Json.Linq;
+using System.Linq;
+using static SkinChanger.SkinChangerAPI;
 
 namespace SkinChanger
 {
@@ -23,9 +27,13 @@ namespace SkinChanger
 		public GameObject Traveller_HEA_Player_v2;
 
 		Dictionary<string, GameObject> prefabs = new();
-		public List<PlayableCharacter> characters;
+		public List<PlayableCharacter> characters = new();
 
 		public PlayableCharacter CurrentCharacter { get; private set; }
+		public List<SkinChangerAPI.CustomSkin> CustomSkins = new();
+		public bool Initialized { get; private set; }
+
+		public PlayableCharacter MissingSkin { get; private set; }
 
 		public class PlayableCharacter
 		{
@@ -47,6 +55,11 @@ namespace SkinChanger
 				ColliderHeight = collHeight;
 				ColliderCenter = collCenter;
 			}
+		}
+
+		public override object GetApi()
+		{
+			return new SkinChangerAPI();
 		}
 
 		// stolen from qsb and nh LOLOLLOLOLOLO
@@ -102,19 +115,7 @@ namespace SkinChanger
 			{
 				if (Path.GetExtension(path) == ".manifest") continue; // ignore the non bundle files
 
-				ModHelper.Console.WriteLine($"loading async {path}");
-				var req1 = AssetBundle.LoadFromFileAsync(path);
-				req1.completed += _ =>
-				{
-					var req2 = req1.assetBundle.LoadAllAssetsAsync<GameObject>();
-					req2.completed += _ =>
-					{
-						var prefab = (GameObject)req2.asset;
-						ReplaceShaders(prefab);
-						prefabs.Add(prefab.name, prefab);
-						ModHelper.Console.WriteLine($"loaded prefab {prefab}");
-					};
-				};
+				LoadPrefab(path);
 			}
 
 			LoadManager.OnCompleteSceneLoad += (scene, loadScene) =>
@@ -129,6 +130,8 @@ namespace SkinChanger
 				PlayerCollider3 = player.transform.Find("PlayerDetector").GetComponent<CapsuleShape>();
 
 				Traveller_HEA_Player_v2 = player.transform.Find("Traveller_HEA_Player_v2").gameObject;
+
+				MissingSkin = new PlayableCharacter("Traveller_HEA_Player_v0", "Error", new Vector3(0, 0.8496093f, 0.15f), 0.5f, 2f, Vector3.zero);
 
 				// make the instances of the prefabs
 				characters = new List<PlayableCharacter>()
@@ -157,8 +160,23 @@ namespace SkinChanger
 					new PlayableCharacter("Traveller_HEA_Player_v22", "Gneiss", new Vector3(0f, 0.4f, 0.2f), 0.5f, 2f, Vector3.zero),
 					new PlayableCharacter("Traveller_HEA_Player_v23", "Moraine", new Vector3(0, 0.3f, 0.1f), 0.5f, 1.5f, new Vector3(0f, -0.2f, 0)),
 					new PlayableCharacter("Traveller_HEA_Player_v24", "Tuff", new Vector3(0, 0.8496093f, 0.15f), 0.5f, 2f, Vector3.zero),
-					new PlayableCharacter("Traveller_HEA_Player_v25", "Tektite", new Vector3(0, 1.2f, 0.2f), 0.5f, 2.5f, new Vector3(0f, 0.25f, 0))
+					new PlayableCharacter("Traveller_HEA_Player_v25", "Tektite", new Vector3(0, 1.2f, 0.2f), 0.5f, 2.5f, new Vector3(0f, 0.25f, 0)),
+					MissingSkin
 				};
+
+				foreach (var customSkin in CustomSkins)
+				{
+					// Check if it loaded properly
+					if (prefabs.ContainsKey(customSkin.PrefabID))
+					{
+						characters.Add(new PlayableCharacter(customSkin.PrefabID, customSkin.Name, customSkin.CameraOffset, customSkin.ColliderRadius, customSkin.ColliderHeight, customSkin.ColliderCenter));
+					}
+					else
+					{
+						// Default to an error sign, because thats funny!
+						characters.Add(new PlayableCharacter("Traveller_HEA_Player_v0", customSkin.Name, new Vector3(0, 0.8496093f, 0.15f), 0.5f, 2f, Vector3.zero));
+					}
+				}
 
 				// parent them to the player
 				foreach (var character in characters)
@@ -170,6 +188,64 @@ namespace SkinChanger
 				}
 
 				ChangeSkin();
+			};
+
+			ModHelper.Events.Unity.FireOnNextUpdate(InitializeCustomSkins);
+		}
+
+		private void InitializeCustomSkins()
+		{
+			var modelSettings = ((ModHelper.Config as ModConfig).Settings["Model"] as JObject);
+			var optionsProperty = modelSettings.Properties().First(x => x.Name == "options");
+			var optionsList = (optionsProperty.Value as JArray).ToArray().Select(x => x.ToString()).ToList();
+
+			var chosenOptionProperty = modelSettings.Properties().First(x => x.Name == "value");
+			var chosenOption = (chosenOptionProperty.Value as JValue).ToString();
+
+			if (EntitlementsManager.IsDlcOwned() == EntitlementsManager.AsyncOwnershipStatus.NotOwned)
+			{
+				optionsList.Remove("Inhabitant");
+			}
+
+			// Load all custom skins
+			foreach (var customSkin in CustomSkins)
+			{
+				try
+				{
+					LoadPrefab(customSkin.BundlePath);
+					optionsList.Add(customSkin.Name);
+				}
+				catch (Exception ex)
+				{
+					ModHelper.Console.WriteLine($"Failed to load custom skin {customSkin.Name} - {ex}");
+				}
+			}
+
+			// Make sure only valid names are in the mod options list now
+			optionsProperty.Value = JArray.FromObject(optionsList.ToArray());
+			if (!optionsList.Contains(chosenOption))
+			{
+				chosenOptionProperty.Value = JValue.FromObject(optionsList.First());
+			}
+
+			Initialized = true;
+			ModHelper.Console.WriteLine($"Done initializing {CustomSkins.Count} custom skins");
+		}
+
+		private void LoadPrefab(string path)
+		{
+			ModHelper.Console.WriteLine($"loading async {path}");
+			var req1 = AssetBundle.LoadFromFileAsync(path);
+			req1.completed += _ =>
+			{
+				var req2 = req1.assetBundle.LoadAllAssetsAsync<GameObject>();
+				req2.completed += _ =>
+				{
+					var prefab = (GameObject)req2.asset;
+					ReplaceShaders(prefab);
+					prefabs.Add(prefab.name, prefab);
+					ModHelper.Console.WriteLine($"loaded prefab {prefab}");
+				};
 			};
 		}
 
