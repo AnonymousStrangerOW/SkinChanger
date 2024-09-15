@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Copyright>Copyright © 2024 xen</Copyright>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <NoWarn>MSB3270</NoWarn>
+    <DebugType>portable</DebugType>
+    <OutputPath Condition="Exists('$(OuterWildsModsDirectory)')">$(OuterWildsModsDirectory)\pikpik_carrot.SkinChanger</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="SkinChangerQSB.csproj.user" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SkinChanger\SkinChanger.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <Reference Include="QSB">
+      <HintPath>$(OuterWildsModsDirectory)\Raicuparta.QuantumSpaceBuddies\QSB.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' != 'Debug' ">
+    <Reference Include="QSB">
+      <HintPath>lib\QSB.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>
