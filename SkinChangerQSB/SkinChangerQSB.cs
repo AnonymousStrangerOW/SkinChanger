@@ -124,18 +124,18 @@ public class SkinChangerQSB : MonoBehaviour
             {
                 DebugLogger.Write("Creating new skin object");
 
-                // Replace meshes for Inhabitant and Nomai to have heads
-                if (skinName == "Inhabitant")
-                {
-                    skinName = "N0";
-                }
-                else if (skinName == "Nomai")
-                {
-                    skinName = "N1";
-                }
-
                 var prefab = SkinChanger.SkinChanger.instance.characters.First(x => x.SettingName == skinName).GameObject;
                 var newPlayerModel = prefab.InstantiateInactive();
+
+                // Fix layers (Nomai and Inhabitant heads are only visible to probe)
+                foreach (var transform in newPlayerModel.GetComponentsInChildren<Transform>())
+                {
+                    if (transform.gameObject.layer == LayerMask.NameToLayer("VisibleToProbe"))
+                    {
+                        transform.gameObject.layer = LayerMask.NameToLayer("Default");
+                    }
+                }
+
                 newPlayerModel.transform.parent = player.Body.transform;
                 newPlayerModel.transform.localPosition = new Vector3(0, -1.03f, -0.2f);
                 newPlayerModel.transform.localScale = Vector3.one * .1f;
