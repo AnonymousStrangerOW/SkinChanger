@@ -124,61 +124,31 @@ public class SkinChangerQSB : MonoBehaviour
             {
                 DebugLogger.Write("Creating new skin object");
 
+                // Replace meshes for Inhabitant and Nomai to have heads
                 if (skinName == "Inhabitant")
                 {
-                    var prefabI = SkinChanger.SkinChanger.instance.characters.First(x => x.SettingName == "N0").GameObject;
-                    var meshI = prefabI.InstantiateInactive();
-                    meshI.transform.parent = player.Body.transform;
-                    meshI.transform.localPosition = new Vector3(0, -1.03f, -0.2f);
-                    meshI.transform.localScale = Vector3.one * .1f;
-                    meshI.transform.localRotation = Quaternion.identity;
-                    Component.DestroyImmediate(meshI.GetComponent<PlayerAnimController>());
-                    player.Body.GetComponentInChildren<AnimatorMirror>()
-                        .SetValue("_to", meshI.GetComponent<Animator>());
-                    meshI.SetActive(true);
-
-                    // Doesn't work on custom meshes and can cause a floating helmet to appear
-                    player.Body.GetComponentInChildren<HelmetAnimator>().enabled = false;
-
-                    _skins[player.PlayerId] = ("N0", meshI);
+                    skinName = "N0";
                 }
                 else if (skinName == "Nomai")
                 {
-                    var prefabS = SkinChanger.SkinChanger.instance.characters.First(x => x.SettingName == "N1").GameObject;
-                    var meshS = prefabS.InstantiateInactive();
-                    meshS.transform.parent = player.Body.transform;
-                    meshS.transform.localPosition = new Vector3(0, -1.03f, -0.2f);
-                    meshS.transform.localScale = Vector3.one * .1f;
-                    meshS.transform.localRotation = Quaternion.identity;
-                    Component.DestroyImmediate(meshS.GetComponent<PlayerAnimController>());
-                    player.Body.GetComponentInChildren<AnimatorMirror>()
-                        .SetValue("_to", meshS.GetComponent<Animator>());
-                    meshS.SetActive(true);
-
-                    // Doesn't work on custom meshes and can cause a floating helmet to appear
-                    player.Body.GetComponentInChildren<HelmetAnimator>().enabled = false;
-
-                    _skins[player.PlayerId] = ("N1", meshS);
+                    skinName = "N1";
                 }
 
-                else
-                {
-                    var prefab = SkinChanger.SkinChanger.instance.characters.First(x => x.SettingName == skinName).GameObject;
-                    var mesh = prefab.InstantiateInactive();
-                    mesh.transform.parent = player.Body.transform;
-                    mesh.transform.localPosition = new Vector3(0, -1.03f, -0.2f);
-                    mesh.transform.localScale = Vector3.one * .1f;
-                    mesh.transform.localRotation = Quaternion.identity;
-                    Component.DestroyImmediate(mesh.GetComponent<PlayerAnimController>());
-                    player.Body.GetComponentInChildren<AnimatorMirror>()
-                        .SetValue("_to", mesh.GetComponent<Animator>());
-                    mesh.SetActive(true);
+                var prefab = SkinChanger.SkinChanger.instance.characters.First(x => x.SettingName == skinName).GameObject;
+                var newPlayerModel = prefab.InstantiateInactive();
+                newPlayerModel.transform.parent = player.Body.transform;
+                newPlayerModel.transform.localPosition = new Vector3(0, -1.03f, -0.2f);
+                newPlayerModel.transform.localScale = Vector3.one * .1f;
+                newPlayerModel.transform.localRotation = Quaternion.identity;
+                Component.DestroyImmediate(newPlayerModel.GetComponent<PlayerAnimController>());
+                player.Body.GetComponentInChildren<AnimatorMirror>()
+                    .SetValue("_to", newPlayerModel.GetComponent<Animator>());
+                newPlayerModel.SetActive(true);
 
-                    // Doesn't work on custom meshes and can cause a floating helmet to appear
-                    player.Body.GetComponentInChildren<HelmetAnimator>().enabled = false;
+                // Doesn't work on custom meshes and can cause a floating helmet to appear
+                player.Body.GetComponentInChildren<HelmetAnimator>().enabled = false;
 
-                    _skins[player.PlayerId] = (skinName, mesh);
-                }
+                _skins[player.PlayerId] = (skinName, newPlayerModel);
             }
         }
     }
