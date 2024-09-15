@@ -1,4 +1,6 @@
-﻿using QSB;
+﻿using OWML.Utils;
+using QSB;
+using QSB.Animation.Player;
 using QSB.Player;
 using QSB.Utility;
 using QSB.WorldSync;
@@ -83,11 +85,16 @@ public class SkinChangerQSB : MonoBehaviour
     {
         DebugLogger.Write($"Changing skin on {player.PlayerId} to {skinName}");
 
+        // Replace skin
+        var isDefaultSkin = skinName == "Hatchling";
+
         if (player.IsLocalPlayer)
         {
             // Immediately tell all other clients to alter our skin
             SendChangeSkinMessage(skinName);
-            // SkinChanger base will handle changing our skin for us
+
+            // SkinChanger base will handle changing our skin for us, unless it's the hatchling where we have to insert our own jank
+            SetHatchlingActive(player.Body, isDefaultSkin, false, PlayerState.IsWearingSuit());
         }
         else
         {
@@ -104,28 +111,87 @@ public class SkinChangerQSB : MonoBehaviour
                 }
             }
 
-            // Replace skin
-            var isDefaultSkin = skinName.ToUpper() == "HATCHLING";
-
-            player.Body.transform.Find("REMOTE_Traveller_HEA_Player_v2").gameObject.SetActive(isDefaultSkin);
+            SetHatchlingActive(player.Body, isDefaultSkin, true, player.SuitedUp);
 
             if (isDefaultSkin)
             {
                 _skins[player.PlayerId] = (skinName, null);
+                player.Body.GetComponentInChildren<AnimatorMirror>()
+                    .SetValue("_to", player.Body.transform.Find("REMOTE_Traveller_HEA_Player_v2").GetComponent<Animator>());
+                player.Body.GetComponentInChildren<HelmetAnimator>().enabled = true;
             }
             else
             {
                 DebugLogger.Write("Creating new skin object");
-                // TODO: The copied gameobject still uses the animations from the original player
+
                 var prefab = SkinChanger.SkinChanger.instance.characters.First(x => x.SettingName == skinName).GameObject;
                 var mesh = prefab.InstantiateInactive();
                 mesh.transform.parent = player.Body.transform;
                 mesh.transform.localPosition = new Vector3(0, -1.03f, -0.2f);
                 mesh.transform.localScale = Vector3.one * .1f;
                 mesh.transform.localRotation = Quaternion.identity;
+                Component.DestroyImmediate(mesh.GetComponent<PlayerAnimController>());
+                player.Body.GetComponentInChildren<AnimatorMirror>()
+                    .SetValue("_to", mesh.GetComponent<Animator>());
                 mesh.SetActive(true);
 
+                // Doesn't work on custom meshes and can cause a floating helmet to appear
+                player.Body.GetComponentInChildren<HelmetAnimator>().enabled = false;
+
                 _skins[player.PlayerId] = (skinName, mesh);
+            }
+        }
+    }
+
+    private Transform[] GetChildrenIncludingInactive(Transform parent)
+    {
+        List<Transform> children = new();
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            children.Add(parent.GetChild(i));
+        }
+        return children.ToArray();
+    }
+
+    private void SetHatchlingActive(GameObject playerBody, bool active, bool isRemote, bool isSuited)
+    {
+        var hatchlingBody = playerBody.transform.Find((isRemote ? "REMOTE_" : string.Empty) + "Traveller_HEA_Player_v2").gameObject;
+        hatchlingBody.SetActive(true);
+
+        if (active)
+        {
+            var playerMeshContainer = hatchlingBody.transform.Find("PlayerMeshContainer");
+            if (playerMeshContainer == null)
+            {
+                playerMeshContainer = new GameObject("PlayerMeshContainer").transform;
+                playerMeshContainer.transform.SetParent(hatchlingBody.transform, false);
+                playerMeshContainer.gameObject.SetActive(false);
+            }
+
+            // Move all meshes from the inactive container to the regular object
+            foreach (var child in GetChildrenIncludingInactive(playerMeshContainer))
+            {
+                child.SetParent(hatchlingBody.transform);
+            }
+
+            // Fix state of suit vs no suit
+            hatchlingBody.transform.Find("player_mesh_noSuit:Traveller_HEA_Player").gameObject.SetActive(isSuited);
+            hatchlingBody.transform.Find("Traveller_Mesh_v01:Traveller_Geo").gameObject.SetActive(isSuited);
+        }
+        else
+        {
+            var playerMeshContainer = hatchlingBody.transform.Find("PlayerMeshContainer");
+            if (playerMeshContainer == null)
+            {
+                playerMeshContainer = new GameObject("PlayerMeshContainer").transform;
+                playerMeshContainer.transform.SetParent(hatchlingBody.transform, false);
+                playerMeshContainer.gameObject.SetActive(false);
+            }
+            // Move all meshes from the inactive container to the regular object
+            foreach (var child in GetChildrenIncludingInactive(hatchlingBody.transform))
+            {
+                if (child == playerMeshContainer) continue;
+                child.transform.SetParent(playerMeshContainer);
             }
         }
     }

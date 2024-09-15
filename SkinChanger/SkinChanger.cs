@@ -181,8 +181,6 @@ namespace SkinChanger
 			var useCamera = ModHelper.Config.GetSettingsValue<bool>(ChangeCamera);
 			var useCollider = ModHelper.Config.GetSettingsValue<bool>(ChangeCollider);
 
-			skinChanged?.Invoke(modelSetting);
-
 			if (!useCamera)
 			{
 				PlayerCamera._origLocalPosition = characters[0].CameraOffset;
@@ -230,6 +228,8 @@ namespace SkinChanger
 					character.GameObject.SetActive(false);
 				}
 			}
+
+			skinChanged?.Invoke(modelSetting);
 		}
 	}
 }
