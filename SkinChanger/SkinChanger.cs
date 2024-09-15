@@ -126,8 +126,7 @@ namespace SkinChanger
 				characters = new List<PlayableCharacter>()
 				{
 					//Unity Object name                                         //Setting Name      //Camera Offset                     //Collider Radius, Height, Center
-					new PlayableCharacter("Traveller_HEA_Player_v0", "N0", new Vector3(0, 0.8496093f, 0.15f), 0.5f, 2f, Vector3.zero),
-					new PlayableCharacter("Traveller_HEA_Player_v1", "N1", new Vector3(0, 0.8496093f, 0.15f), 0.5f, 2f, Vector3.zero),
+					new PlayableCharacter(null /*uses existing v2*/, "Hatchling", new Vector3(0, 0.8496093f, 0.15f), 0.5f, 2f, Vector3.zero),
 					new PlayableCharacter("Traveller_HEA_Player_v3", "Inhabitant", new Vector3(0, 2.2f, 0.27f), 0.5f, 3.6f, new Vector3(0f, 0.875f, 0f)),
 					new PlayableCharacter("Traveller_HEA_Player_v4", "Nomai", new Vector3(0, 1.1f, 0.3f), 0.5f, 2.5f, new Vector3(0f, 0.3f, 0f)),
 					new PlayableCharacter("Traveller_HEA_Player_v5", "Chert", new Vector3(0, 0.3f, 0.2f), 0.5f, 1.5f, new Vector3(0f, -0.2f, 0f)),
