@@ -25,6 +25,8 @@ namespace SkinChanger
 		Dictionary<string, GameObject> prefabs = new();
 		public List<PlayableCharacter> characters;
 
+		public PlayableCharacter CurrentCharacter { get; private set; }
+
 		public class PlayableCharacter
 		{
 			public GameObject GameObject;
@@ -88,6 +90,12 @@ namespace SkinChanger
 				// Adapted from QSB-NH compat in Quantum Space Buddies
 				var skinChangerQSB = Assembly.LoadFrom(Path.Combine(ModHelper.Manifest.ModFolderPath, "SkinChangerQSB.dll"));
 				gameObject.AddComponent(skinChangerQSB.GetType("SkinChangerQSB.SkinChangerQSB", true));
+			}
+
+			// Enable CommonCameraUtil compat if required
+			if (ModHelper.Interaction.ModExists("xen.CommonCameraUtility"))
+			{
+				gameObject.AddComponent<ThirdPersonCompatibility>();
 			}
 
 			foreach (var path in Directory.EnumerateFiles(Path.Combine(ModHelper.Manifest.ModFolderPath, "Assets")))
@@ -203,6 +211,8 @@ namespace SkinChanger
 			{
 				if (modelSetting == character.SettingName)
 				{
+					CurrentCharacter = character;
+
 					character.GameObject.SetActive(true);
 
 					if (useCamera)
