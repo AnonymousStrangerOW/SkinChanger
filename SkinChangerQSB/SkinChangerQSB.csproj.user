@@ -1,0 +1,6 @@
+﻿<Project>
+  <PropertyGroup>
+    <OutputPath>$(AppData)/OuterWildsModManager/OWML/Mods/pikpik_carrot.SkinChanger</OutputPath>
+    <OuterWildsModsDirectory>$(AppData)/OuterWildsModManager/OWML/Mods</OuterWildsModsDirectory>
+  </PropertyGroup>
+</Project>

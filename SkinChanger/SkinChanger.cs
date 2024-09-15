@@ -1,7 +1,9 @@
 ﻿using OWML.Common;
 using OWML.ModHelper;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using UnityEngine;
 
 namespace SkinChanger
@@ -9,6 +11,9 @@ namespace SkinChanger
 	public class SkinChanger : ModBehaviour
 	{
 		public static SkinChanger instance;
+
+		// Action for QSB compat to listen to
+		public Action<string> skinChanged;
 
 		public PlayerCameraController PlayerCamera;
 		// cant use array cuz one of them is a shape :((((
@@ -18,9 +23,9 @@ namespace SkinChanger
 		public GameObject Traveller_HEA_Player_v2;
 
 		Dictionary<string, GameObject> prefabs = new();
-		List<PlayableCharacter> characters;
+		public List<PlayableCharacter> characters;
 
-		class PlayableCharacter
+		public class PlayableCharacter
 		{
 			public GameObject GameObject;
 			public string SettingName;
@@ -75,6 +80,15 @@ namespace SkinChanger
 		private void Start()
 		{
 			instance = this;
+
+			// Enable QSB compat if required
+			if (ModHelper.Interaction.ModExists("Raicuparta.QuantumSpaceBuddies"))
+			{
+				// QSB compat has to be in a different DLL since it depends on the QSB DLL.
+				// Adapted from QSB-NH compat in Quantum Space Buddies
+				var skinChangerQSB = Assembly.LoadFrom(Path.Combine(ModHelper.Manifest.ModFolderPath, "SkinChangerQSB.dll"));
+				gameObject.AddComponent(skinChangerQSB.GetType("SkinChangerQSB.SkinChangerQSB", true));
+			}
 
 			foreach (var path in Directory.EnumerateFiles(Path.Combine(ModHelper.Manifest.ModFolderPath, "Assets")))
 			{
@@ -166,6 +180,8 @@ namespace SkinChanger
 			var modelSetting = ModHelper.Config.GetSettingsValue<string>(ModelSetting);
 			var useCamera = ModHelper.Config.GetSettingsValue<bool>(ChangeCamera);
 			var useCollider = ModHelper.Config.GetSettingsValue<bool>(ChangeCollider);
+
+			skinChanged?.Invoke(modelSetting);
 
 			if (!useCamera)
 			{
