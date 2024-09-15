@@ -8,6 +8,7 @@ using UnityEngine;
 using OWML.Utils;
 using Newtonsoft.Json.Linq;
 using System.Linq;
+using static SkinChanger.SkinChangerAPI;
 
 namespace SkinChanger
 {
@@ -31,6 +32,8 @@ namespace SkinChanger
 		public PlayableCharacter CurrentCharacter { get; private set; }
 		public List<SkinChangerAPI.CustomSkin> CustomSkins = new();
 		public bool Initialized { get; private set; }
+
+		public PlayableCharacter MissingSkin { get; private set; }
 
 		public class PlayableCharacter
 		{
@@ -128,6 +131,8 @@ namespace SkinChanger
 
 				Traveller_HEA_Player_v2 = player.transform.Find("Traveller_HEA_Player_v2").gameObject;
 
+				MissingSkin = new PlayableCharacter("Traveller_HEA_Player_v0", "Error", new Vector3(0, 0.8496093f, 0.15f), 0.5f, 2f, Vector3.zero);
+
 				// make the instances of the prefabs
 				characters = new List<PlayableCharacter>()
 				{
@@ -155,7 +160,8 @@ namespace SkinChanger
 					new PlayableCharacter("Traveller_HEA_Player_v22", "Gneiss", new Vector3(0f, 0.4f, 0.2f), 0.5f, 2f, Vector3.zero),
 					new PlayableCharacter("Traveller_HEA_Player_v23", "Moraine", new Vector3(0, 0.3f, 0.1f), 0.5f, 1.5f, new Vector3(0f, -0.2f, 0)),
 					new PlayableCharacter("Traveller_HEA_Player_v24", "Tuff", new Vector3(0, 0.8496093f, 0.15f), 0.5f, 2f, Vector3.zero),
-					new PlayableCharacter("Traveller_HEA_Player_v25", "Tektite", new Vector3(0, 1.2f, 0.2f), 0.5f, 2.5f, new Vector3(0f, 0.25f, 0))
+					new PlayableCharacter("Traveller_HEA_Player_v25", "Tektite", new Vector3(0, 1.2f, 0.2f), 0.5f, 2.5f, new Vector3(0f, 0.25f, 0)),
+					MissingSkin
 				};
 
 				foreach (var customSkin in CustomSkins)
