@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
+using OWML.Utils;
+using Newtonsoft.Json.Linq;
+using System.Linq;
 
 namespace SkinChanger
 {
@@ -96,6 +99,27 @@ namespace SkinChanger
 			if (ModHelper.Interaction.ModExists("xen.CommonCameraUtility"))
 			{
 				gameObject.AddComponent<ThirdPersonCompatibility>();
+			}
+
+			var modelSettings = ((ModHelper.Config as ModConfig).Settings["Model"] as JObject);
+			var optionsProperty = modelSettings.Properties().First(x => x.Name == "options");
+			var optionsList = (optionsProperty.Value as JArray).ToArray().Select(x => x.ToString()).ToList();
+
+			var chosenOptionProperty = modelSettings.Properties().First(x => x.Name == "value");
+			var chosenOption = (chosenOptionProperty.Value as JValue).ToString();
+
+			if (EntitlementsManager.IsDlcOwned() == EntitlementsManager.AsyncOwnershipStatus.NotOwned)
+			{
+				optionsList.Remove("Inhabitant");
+			}
+
+			// TODO: Make an api that adds in new options right here
+
+			// Make sure only valid names are in the mod options list now
+			optionsProperty.Value = JArray.FromObject(optionsList.ToArray());
+			if (!optionsList.Contains(chosenOption))
+			{
+				chosenOptionProperty.Value = JValue.FromObject(optionsList.First());
 			}
 
 			foreach (var path in Directory.EnumerateFiles(Path.Combine(ModHelper.Manifest.ModFolderPath, "Assets")))
