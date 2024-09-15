@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using OWML.ModHelper;
+using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace SkinChanger;
@@ -27,7 +29,7 @@ public class SkinChangerAPI	: ISkinChanger
 		}
 	}
 
-	public void RegisterCustomSkin(string name, string assetName, string bundlePath, Vector3 cameraOffset, float colliderRadius, float colliderHeight, Vector3 colliderCenter)
+	public void RegisterCustomSkin(ModBehaviour mod, string name, string assetName, string bundlePath, Vector3 cameraOffset, float colliderRadius, float colliderHeight, Vector3 colliderCenter)
 	{
 		if (SkinChanger.instance.Initialized)
 		{
@@ -35,7 +37,7 @@ public class SkinChangerAPI	: ISkinChanger
 		}
 		else
 		{
-			SkinChanger.instance.CustomSkins.Add(new CustomSkin(name, assetName, bundlePath, cameraOffset, colliderRadius, colliderHeight, colliderCenter));
+			SkinChanger.instance.CustomSkins.Add(new CustomSkin(name, assetName, Path.Combine(mod.ModHelper.Manifest.ModFolderPath, bundlePath), cameraOffset, colliderRadius, colliderHeight, colliderCenter));
 			SkinChanger.instance.ModHelper.Console.WriteLine($"Registered custom skin {name} at {bundlePath}");
 		}
 	}
