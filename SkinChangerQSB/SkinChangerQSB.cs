@@ -118,7 +118,12 @@ public class SkinChangerQSB : MonoBehaviour
                 _skins[player.PlayerId] = (skinName, null);
                 player.Body.GetComponentInChildren<AnimatorMirror>()
                     .SetValue("_to", player.Body.transform.Find("REMOTE_Traveller_HEA_Player_v2").GetComponent<Animator>());
-                player.Body.GetComponentInChildren<HelmetAnimator>().enabled = true;
+
+                // Make sure the helmet animator state is set properly
+                var helmet = player.Body.GetComponentInChildren<HelmetAnimator>();
+                helmet.enabled = true;
+                // Can't find a QSB property that says if a helmet should be worn or not so just assume worn
+                helmet.SetHelmetInstant(true);
             }
             else
             {
@@ -185,7 +190,7 @@ public class SkinChangerQSB : MonoBehaviour
             }
 
             // Fix state of suit vs no suit
-            hatchlingBody.transform.Find("player_mesh_noSuit:Traveller_HEA_Player").gameObject.SetActive(isSuited);
+            hatchlingBody.transform.Find("player_mesh_noSuit:Traveller_HEA_Player").gameObject.SetActive(!isSuited);
             hatchlingBody.transform.Find("Traveller_Mesh_v01:Traveller_Geo").gameObject.SetActive(isSuited);
         }
         else
