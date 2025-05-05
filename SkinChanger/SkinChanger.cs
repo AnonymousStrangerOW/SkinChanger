@@ -284,6 +284,7 @@ namespace SkinChanger
 		{
 			
 			var changeCamInShip = ModHelper.Config.GetSettingsValue<bool>(NormalCameraSizeInShip);
+			var useCamera = ModHelper.Config.GetSettingsValue<bool>(ChangeCamera);
 			if (changeCamInShip)
 			{
 				if (LoadManager.GetCurrentScene() == OWScene.SolarSystem || LoadManager.GetCurrentScene() == OWScene.EyeOfTheUniverse)
@@ -292,7 +293,7 @@ namespace SkinChanger
 					{
 						PlayerCamera._origLocalPosition = characters[0].CameraOffset;
 					}
-					else
+					else if (useCamera)
 					{
 						PlayerCamera._origLocalPosition = CurrentCharacter.CameraOffset;
 					}
